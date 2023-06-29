@@ -1,31 +1,31 @@
 const St = imports.gi.St;
-const GObject = imports.gi.GObject;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
-const { GLib, Shell, Meta } = imports.gi;
-const Mainloop = imports.mainloop;
+const { GLib } = imports.gi;
 
 class Extension {
     constructor() {
         this._indicator = null;
     }
 
-    enable() {
-        const indicatorName = _('%s Indicator').format(Me.metadata.name);
-        this._indicator = new PanelMenu.Button(0.0, indicatorName, false);
-
-        let label = new St.Label({ text: 'init', style_class: 'label' });
+    update_info(button) {
         let [result, stdout, stderr] = GLib.spawn_command_line_sync('curl ip.lacodificadora.com');
-        
         if (result) {
-            label = new St.Label({ text: String.fromCharCode.apply(null, stdout), style_class: 'label' });
+            button.set_label(String.fromCharCode.apply(null, stdout));
         } else {
             logError(stderr);
         }
-        
-        this._indicator.add_child(label);
+    }
+
+    enable() {
+        const indicatorName = _('%s Indicator').format(Me.metadata.name);
+        this._indicator = new PanelMenu.Button(0.0, indicatorName, false);
+        let button = new St.Button({ label: 'init', style_class: 'label'});
+        this.update_info(button)
+    	button.connect('clicked', () => {  this.update_info(button) });
+        this._indicator.add_child(button);
         Main.panel.addToStatusArea(indicatorName, this._indicator);
     }
 
