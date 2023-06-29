@@ -2,7 +2,7 @@
 \
 Simple GNOME Shell Extension that shows your current public IP address  
 It's my first GNOME Shell extension and it's for testing purposes only!  
-You can download Zipped Extension [showip@lacodificadora.com.zip](https://github.com/elcamilet/show-ip-gnome-shell-extension/blob/master/showip%40lacodificadora.com.zip)
+You can download Zipped Extension here: [showip@lacodificadora.com.zip](https://github.com/elcamilet/show-ip-gnome-shell-extension/blob/master/showip%40lacodificadora.com.zip)
 &nbsp;
 ## USAGE:
 Automatically shows your public IP address.  
