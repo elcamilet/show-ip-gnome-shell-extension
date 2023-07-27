@@ -1,5 +1,5 @@
 {
-  "name": "Show Current Public IP",
+  "name": "Show IP GNOME Shell Extension",
   "description": "Simple GNOME Shell Extension that shows your current public IP address. It's retrieved by a curl command to ip.lacodificadora.com",
   "uuid": "showip@lacodificadora.com",
   "shell-version": [

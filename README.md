@@ -7,7 +7,10 @@ And you can access to source code here: [elCamilet's Github](https://github.com/
 ## &nbsp;
 ## USAGE:
 Automatically shows your public IP address.  
-You can refresh it by clicking on IP address and IP address will be updated.   
+You can refresh it by clicking on IP address and IP address will be updated.
+
+**UPDATE!** Now your public IP is auto refreshed every 5 minutes!
+
 Yout IP address is fetched by this curl command:
 ```
 curl ip.lacodificadora.com
