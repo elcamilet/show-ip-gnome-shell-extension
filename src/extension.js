@@ -27,13 +27,17 @@ class Extension {
     	button.connect('clicked', () => {  this.update_info(button) });
         this._indicator.add_child(button);
         Main.panel.addToStatusArea(indicatorName, this._indicator);
-        GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+        sourceId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
             this.update_info(button)
             return true; 
         });
     }
 
     disable() {
+        if (sourceId) {
+            GLib.Source.remove(sourceId);
+            sourceId = null;
+        }
         this._indicator.destroy();
         this._indicator = null;
     }
