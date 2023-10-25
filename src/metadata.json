@@ -1,9 +1,9 @@
 {
-  "name": "Show IP GNOME Shell Extension",
+  "name": "Show public IP",
   "description": "Simple GNOME Shell Extension that shows your current public IP address. It's retrieved by a curl command to ip.lacodificadora.com",
-  "uuid": "showip@lacodificadora.com",
+  "uuid": "showpublicip@lacodificadora.com",
   "shell-version": [
-    "42"
+    "40","41","42","43","44","45"
   ],
-  "url": "https://github.com/elcamilet/show-ip-gnome-shell-extension"
+  "url": "https://github.com/elcamilet/show-public-ip"
 }

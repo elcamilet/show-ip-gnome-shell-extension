@@ -1,4 +1,4 @@
-# show-ip-gnome-shell-extension
+# show-public-ip
 \
 Simple GNOME Shell Extension that shows your current public IP address.  
 It's my first GNOME Shell extension and it's free... There is no warranty, you know?  

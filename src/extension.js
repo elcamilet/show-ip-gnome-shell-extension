@@ -8,6 +8,7 @@ const { GLib } = imports.gi;
 class Extension {
     constructor() {
         this._indicator = null;
+        this._sourceId = null;
     }
 
     update_info(button) {
@@ -27,16 +28,16 @@ class Extension {
     	button.connect('clicked', () => {  this.update_info(button) });
         this._indicator.add_child(button);
         Main.panel.addToStatusArea(indicatorName, this._indicator);
-        let sourceId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+        this._sourceId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
             this.update_info(button)
             return true; 
         });
     }
 
     disable() {
-        if (sourceId) {
-            GLib.Source.remove(sourceId);
-            sourceId = null;
+        if (this._sourceId) {
+            GLib.Source.remove(this._sourceId);
+            this._sourceId = null;
         }
         this._indicator.destroy();
         this._indicator = null;
