@@ -1,4 +1,4 @@
-const St = imports.gi.St;
+const Soup = imports.gi.Soup;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
@@ -8,14 +8,20 @@ const { GLib } = imports.gi;
 class Extension {
     constructor() {
         this._indicator = null;
+        this._session = new Soup.Session();
     }
 
     update_info(button) {
-        let [result, stdout, stderr] = GLib.spawn_command_line_sync('curl ip.lacodificadora.com');
-        if (result) {
-            button.set_label(String.fromCharCode.apply(null, stdout));
-        } else {
-            logError(stderr);
+        let message = Soup.Message.new('GET', 'http://ip.lacodificadora.com');
+        this._session.send_message(message);
+
+        let result = this._session.send_message_sync(message);
+        if (result.status_code === 200) {
+            let response_body = result.response_body.data;
+            button.set_label(response_body);
+        } 
+        else {
+            logError(`Failed to fetch IP: ${result.status_code}`);
         }
     }
 
@@ -27,7 +33,7 @@ class Extension {
     	button.connect('clicked', () => {  this.update_info(button) });
         this._indicator.add_child(button);
         Main.panel.addToStatusArea(indicatorName, this._indicator);
-        let sourceId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+        GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
             this.update_info(button)
             return true; 
         });
