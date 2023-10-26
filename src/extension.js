@@ -1,3 +1,4 @@
+const St = imports.gi.St;
 const Soup = imports.gi.Soup;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
