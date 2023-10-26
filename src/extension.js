@@ -12,43 +12,39 @@ class Extension {
     }
 
     async update_info(button) {
-        let message = Soup.Message.new('GET', 'http://ip.lacodificadora.com');
-        
         try {
-            let [response, data] = await this._session.send_async(message);
-            
-            if (response.status_code === 200) {
-                let response_body = data.get_data();
-                button.set_label(response_body);
-            } else {
-                logError(`Failed to fetch IP: ${response.status_code}`);
-            }
+            let message = Soup.Message.new('GET', 'http://ip.lacodificadora.com');
+            this._session.send_and_read_async( message, GLib.PRIORITY_DEFAULT, null, (session, result) => {
+                if (message.get_status() === Soup.Status.OK) {
+                    let bytes = session.send_and_read_finish(result);
+                    let decoder = new TextDecoder('utf-8');
+                    let response = decoder.decode(bytes.get_data());
+                    button.set_label(response);
+                }
+            });
         } catch (error) {
-            logError(`Error: ${error.message}`);
+            log(`Error: ${error.message}`);
         }
     }
-
 
     enable() {
         this._session = new Soup.Session();
         const indicatorName = _('%s Indicator').format(Me.metadata.name);
         this._indicator = new PanelMenu.Button(0.0, indicatorName, false);
-        let button = new St.Button({ label: 'init', style_class: 'label'});
-        this.update_info(button)
-    	button.connect('clicked', () => {  this.update_info(button) });
+        let button = new St.Button({ label: 'loading...', style_class: 'label'});
+        this.update_info(button);
+    	button.connect('clicked', () => {  
+            this.update_info(button); 
+        });
         this._indicator.add_child(button);
         Main.panel.addToStatusArea(indicatorName, this._indicator);
         GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
-            this.update_info(button)
+            this.update_info(button);
             return true; 
         });
     }
 
     disable() {
-        if (sourceId) {
-            GLib.Source.remove(sourceId);
-            sourceId = null;
-        }
         this._indicator.destroy();
         this._indicator = null;
         this._session = null;
