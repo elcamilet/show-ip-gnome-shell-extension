@@ -8,24 +8,28 @@ const { GLib } = imports.gi;
 class Extension {
     constructor() {
         this._indicator = null;
-        this._session = new Soup.Session();
     }
 
-    update_info(button) {
+    async update_info(button) {
         let message = Soup.Message.new('GET', 'http://ip.lacodificadora.com');
-        this._session.send_message(message);
-
-        let result = this._session.send_message_sync(message);
-        if (result.status_code === 200) {
-            let response_body = result.response_body.data;
-            button.set_label(response_body);
-        } 
-        else {
-            logError(`Failed to fetch IP: ${result.status_code}`);
+        
+        try {
+            let [response, data] = await this._session.send_async(message);
+            
+            if (response.status_code === 200) {
+                let response_body = data.get_data();
+                button.set_label(response_body);
+            } else {
+                logError(`Failed to fetch IP: ${response.status_code}`);
+            }
+        } catch (error) {
+            logError(`Error: ${error.message}`);
         }
     }
 
+
     enable() {
+        this._session = new Soup.Session();
         const indicatorName = _('%s Indicator').format(Me.metadata.name);
         this._indicator = new PanelMenu.Button(0.0, indicatorName, false);
         let button = new St.Button({ label: 'init', style_class: 'label'});
@@ -46,6 +50,7 @@ class Extension {
         }
         this._indicator.destroy();
         this._indicator = null;
+        this._session = null;
     }
 }
 
