@@ -13,7 +13,7 @@ You can refresh it manually by clicking on IP address and IP address will be upd
 
 Yout IP address is fetched by this curl command:
 ```
-curl ip.lacodificadora.com
+curl ip.elcamilet.com
 ```
 &nbsp;
 ## DEBUG:
@@ -26,4 +26,4 @@ journalctl -f -o cat /usr/bin/gnome-shell
 This extension is licensed by GNU General Public License v3.0  
 &nbsp;
 ## AUTHOR
-Developed by [La Codificadora de Ideas](https://lacodificadora.com)
+Developed by [elCamilet](https://elcamilet.com)

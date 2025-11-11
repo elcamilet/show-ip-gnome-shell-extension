@@ -9,11 +9,12 @@ const { GLib } = imports.gi;
 class Extension {
     constructor() {
         this._indicator = null;
+        this._sourceId = null;
     }
 
     async update_info(button) {
         try {
-            let message = Soup.Message.new('GET', 'http://ip.lacodificadora.com');
+            let message = Soup.Message.new('GET', 'http://ip.elcamilet.com');
             this._session.send_and_read_async( message, GLib.PRIORITY_DEFAULT, null, (session, result) => {
                 if (message.get_status() === Soup.Status.OK) {
                     let bytes = session.send_and_read_finish(result);
@@ -38,13 +39,17 @@ class Extension {
         });
         this._indicator.add_child(button);
         Main.panel.addToStatusArea(indicatorName, this._indicator);
-        GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+        this._sourceId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
             this.update_info(button);
             return true; 
         });
     }
 
     disable() {
+        if (this._sourceId) {
+            GLib.Source.remove(this._sourceId);
+            this._sourceId = null;
+        }
         this._indicator.destroy();
         this._indicator = null;
         this._session = null;
