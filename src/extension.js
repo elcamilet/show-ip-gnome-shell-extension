@@ -61,7 +61,7 @@ export default class ShowPublicIp extends Extension {
             this._indicator = null;
         }
 
-        this._session = null;
         this._session.abort();
+        this._session = null;
     }
 }
