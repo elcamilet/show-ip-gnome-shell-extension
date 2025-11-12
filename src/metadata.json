@@ -3,8 +3,6 @@
   "description": "Simple GNOME Shell Extension that shows your current public IP address. It's retrieved by a curl command to ip.elcamilet.com",
   "name": "Show Public IP",
   "shell-version": [
-    "43",
-    "44",
     "45",
     "46",
     "47",
