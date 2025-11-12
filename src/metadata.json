@@ -11,5 +11,8 @@
   ],
   "url": "https://github.com/elcamilet/show-ip-gnome-shell-extension",
   "uuid": "showip@lacodificadora.com",
-  "version": 14
+  "donations": {
+    "paypal": "elcamilet"
+  },
+  "version": 16
 }

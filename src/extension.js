@@ -5,7 +5,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import GLib from 'gi://GLib';
 
-export default class MyExtension extends Extension {
+export default class ShowPublicIp extends Extension {
     constructor(metadata) {
         super(metadata);
         this._indicator = null;
@@ -62,5 +62,6 @@ export default class MyExtension extends Extension {
         }
 
         this._session = null;
+        this._session.abort();
     }
 }
